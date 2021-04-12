@@ -6,7 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-//测试修改后提交到Git
+//测试修改后合并代码
 public class JsonTest {
     @Test
     public void test1() {
