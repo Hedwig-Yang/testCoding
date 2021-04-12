@@ -7,5 +7,22 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../../../../JarPackage/commons-lang3-3.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../../../JarPackage/fastjson-1.2.75.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../../../JarPackage/hamcrest-core-1.1.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../../../JarPackage/junit-4.12.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../../../../JarPackage/Java-5.0.1-linux_x86_64/sequoiadb-driver-5.0.1.jar!/" />
+          <root url="file://$MODULE_DIR$/.." />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../../../../JarPackage/hamcrest-core-1.1.jar!/" />
+          <root url="file://$MODULE_DIR$/src" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>
