@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MutipleSelect</title>
+    <link href="multiple-select.css" rel="stylesheet" />
+</head>
+
+<body>
+    <select name='column' multiple="multiple" >
+    　　<option value='1'> 选项一 </option>
+    　　<option value='2'> 选项二 </option>
+    　　<option value='3'> 选项三</option>
+    </select>
+</body>
+
+
+<script src="jquery.min.js"></script>
+<script src="multiple-select.js"></script>
+<script>
+    // 初始化
+    $("select[name='column']").multipleSelect({
+        placeholder: "请选择",
+        selectAll:true,
+        showClear:true,
+        allSelected:"选择全部"
+    });
+    // 设置默认选中
+    $("select[name='column']").multipleSelect('setSelects', [1,2,3]);
+</script>
+
+
+</html>
