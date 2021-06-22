@@ -100,5 +100,41 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy02/lib/spring-tx-4.0.0.RELEASE.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy02/lib/spring-orm-4.0.0.RELEASE.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy02/lib/spring-jdbc-4.0.0.RELEASE.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy02/lib/spring-expression-4.0.0.RELEASE.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy02/lib/spring-core-4.0.0.RELEASE.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy02/lib/spring-context-4.0.0.RELEASE.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy02/lib/spring-beans-4.0.0.RELEASE.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy02/lib/spring-aspects-4.0.0.RELEASE.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy02/lib/spring-aop-4.0.0.RELEASE.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="file://$MODULE_DIR$/../../frameworkStudyPracticeProject/SpringMVC_CombinSpring/src" />
+          <root url="file://$MODULE_DIR$/../../frameworkStudyPracticeProject/springBoot_InterfaceToSql/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../frameworkStudyPracticeProject/springBoot_InterfaceToSql/src/test/java" />
+          <root url="file://$MODULE_DIR$/../../frameworkStudyPracticeProject/springMVC_CRUDDemo/src" />
+          <root url="file://$MODULE_DIR$/../../frameworkStudyPracticeProject/springMVC_HelloWorld/src" />
+          <root url="file://$MODULE_DIR$/../../frameworkStudyPracticeProject/springMVC_JsonDemo/src" />
+          <root url="file://$MODULE_DIR$/../../frameworkStudyPracticeProject/springMVC_ModelAndView/src" />
+          <root url="file://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy01/src" />
+          <root url="file://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy01/test" />
+          <root url="file://$MODULE_DIR$/../../frameworkStudyPracticeProject/springStudy02/src" />
+          <root url="file://$MODULE_DIR$/src" />
+          <root url="file://$MODULE_DIR$/../../xxl-job/xxl-job-admin/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../xxl-job/xxl-job-admin/src/test/java" />
+          <root url="file://$MODULE_DIR$/../../xxl-job/xxl-job-core/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../xxl-job/xxl-job-executor-samples/xxl-job-executor-sample-frameless/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../xxl-job/xxl-job-executor-samples/xxl-job-executor-sample-frameless/src/test/java" />
+          <root url="file://$MODULE_DIR$/../../xxl-job/xxl-job-executor-samples/xxl-job-executor-sample-springboot/src/main/java" />
+          <root url="file://$MODULE_DIR$/../../xxl-job/xxl-job-executor-samples/xxl-job-executor-sample-springboot/src/test/java" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

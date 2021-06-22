@@ -20,19 +20,25 @@ public class JsonTest {
     }
 
     @Test
-    public void test2(){
+    public void test2() {
         JSONObject es = new JSONObject();
-        es.put("num",123);
+        es.put("num", 123);
         String num1 = es.getString("num1");
-        System.out.println(num1==null);
+        System.out.println(num1 == null);
     }
 
     @Test
-    public void test3(){
-        String s ="{\"781D4AD84460\": {\"label\": \"RA|RC\", \"type\": 1, \"brand\": \"ZTE\", \"model\": \"ZXHN F450\", \"isdual\": 2, \"isge\": 2, \"lowdev\": \"3\", \"wipoint\": 82.0, \"historybestchannel\": 7, \"currentchannel\": 8, \"cpuusedetail\": [0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \"memusedetail\": [0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \"cputempdetail\": [12], \"pontempdetail\": [0, 44.0, 45.0, 45.0, 45.0, 45.0, 45.0, 45.0, 45.0, 45.0, 45.0, 44.0, 44.0], \"onlinetime\": 641050, \"lowfreq\": 0.0, \"totalfreq\": 993.0, \"lowcovrageperc\": 0.0}, \"line\": {\"label\": \"\"}, \"flow\": {\"label\": \"\"}}";
+    public void test3() {
+        String s = "{\"781D4AD84460\": {\"label\": \"RA|RC\", \"type\": 1, \"brand\": \"ZTE\", \"model\": \"ZXHN F450\", \"isdual\": 2, \"isge\": 2, \"lowdev\": \"3\", \"wipoint\": 82.0, \"historybestchannel\": 7, \"currentchannel\": 8, \"cpuusedetail\": [0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \"memusedetail\": [0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], \"cputempdetail\": [12], \"pontempdetail\": [0, 44.0, 45.0, 45.0, 45.0, 45.0, 45.0, 45.0, 45.0, 45.0, 45.0, 44.0, 44.0], \"onlinetime\": 641050, \"lowfreq\": 0.0, \"totalfreq\": 993.0, \"lowcovrageperc\": 0.0}, \"line\": {\"label\": \"\"}, \"flow\": {\"label\": \"\"}}";
         JSONObject json = JSONObject.parseObject(s);
         System.out.println(json.toJSONString());
     }
 
+    @Test
+    public void test4(){
+        String pattern = "^\\d{8}$";
+        String s = "20210531";
+        System.out.println(s.matches(pattern));
+    }
 
 }
