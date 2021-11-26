@@ -1,8 +1,22 @@
 package others;
 
+import org.junit.Test;
+
 import java.util.ArrayList;
 
 public class LocalVar {
+
+    public int i;
+
+    @Test
+    public void test(){
+        i = 2;
+        souti();
+    }
+    public void souti(){
+        System.out.println(i);
+    }
+
     public static void main(String[] args) {
         String sameUpperGw = "";
         ArrayList<String> stringStore = new ArrayList<>();
