@@ -29,4 +29,14 @@ public class MapTest {
         jo.remove("1");
         System.out.println(((JSONObject) map.get("json")).toJSONString());
     }
+
+    /**
+     * 测试map的get方法
+     */
+    @Test
+    public void testMap(){
+        Map map = new HashMap();
+        map.put("path","c:/");
+        System.out.println(map.get("path"));
+    }
 }
