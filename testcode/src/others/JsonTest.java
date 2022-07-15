@@ -1,5 +1,6 @@
 package others;
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.junit.Test;
 
@@ -39,6 +40,20 @@ public class JsonTest {
         String pattern = "^\\d{8}$";
         String s = "20210531";
         System.out.println(s.matches(pattern));
+    }
+
+    /**
+     * 数组的元素是索引，修改同时产生影响
+     */
+    @Test
+    public void testJsonArray(){
+        JSONArray ja = new JSONArray();
+        JSONObject jo = new JSONObject();
+        jo.put("a",1);
+        ja.add(jo);
+        JSONObject jo2 = ja.getJSONObject(0);
+        jo2.put("a",3);
+        System.out.println(ja.toJSONString());
     }
 
 }

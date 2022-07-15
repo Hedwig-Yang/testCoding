@@ -1,5 +1,8 @@
 package jiuzhang;
 
+import org.junit.Test;
+import sun.reflect.generics.tree.Tree;
+
 import java.lang.reflect.Array;
 import java.util.*;
 
@@ -16,7 +19,7 @@ public class MiddleClassAlgorithm {
     /**
      * 获取字符串中的回文子串（palindromic substring） 方法一
      * 时间复杂度：n的三次方
-     * 循环嵌套暴力破解法：采用对字符串长度逆序遍历方式检查字串是否是回文子串，再做遍历。
+     * 循环嵌套暴力破解法：采用对字符串长度逆序遍历方式检查字 串是否是回文子串，再做遍历。
      * @param inputString
      * @return
      */
@@ -440,7 +443,7 @@ public class MiddleClassAlgorithm {
             if(nums[pivot] == target){
                 start = pivot;  //在右半区域寻找target值最后一个出现的位置
                //end = pivot;   //在左半区域寻找target值第一个出现的位置
-        }
+            }
             if(nums[pivot] < target){
                 //3、可以去掉+1、-1，不影响结果
                 //start = pivot + 1;
@@ -455,11 +458,69 @@ public class MiddleClassAlgorithm {
         if(nums[end] == target){   //找最后一个target位置就先检查end
             return end;
         }
-        if(nums[start] == target){ //找第一个target位置就先检查start，（移动start判断到end判断钱）
+        if(nums[start] == target){ //找第一个target位置就先检查start
             return start;
         }
 
         return -1;
+    }
+
+    /*
+     * 二分查找：Find K Closest Elements在排序数组中找最接近的K个数
+     *      给一个目标数 target, 一个非负整数 k, 一个按照升序排列的数组 A。在A中找与target最接近的
+     * k个整数。返回这k个数并按照与target的接近程度从小到大排序，如果接近程度相当，那么小的数排在前面。
+     * 思路：
+     *      先采用二分查找算法，获取目标值插入的位置，即大于等于目标值的最小值的右边，或小于等于
+     * 目标值的最大值的右边；然后以插入位置为中心采用反向双指针算法，依次获取接近的K个值。
+     */
+    public int getNearestBiggerIndex(int[] arr, int target){
+        if(arr == null || arr.length == 0){
+            return -1;
+        }
+        int start = 0;
+        int end = arr.length - 1;
+        int pivot = start + (end - start) / 2;
+        while(start + 1 < end){
+            if(target == arr[pivot]){
+                start = pivot;
+            }
+            if(target < arr[pivot]){
+                end = pivot;
+            }
+            if(target > arr[pivot]){
+                start = pivot;
+            }
+        }
+        return (target - arr[start] < arr[end] - target) ? start : end;
+    }
+
+    public int[] getNearestKNums(int index, int[] arr, int k, int target){
+        if(arr.length < k){
+            return null;
+        }
+        int left = index - 1;
+        int right = index;
+        int[] resultArr = new int[k];
+        for(int i = 0; i < k; i++){
+            if(left > 0 && right < arr.length){
+                if( target - arr[left] < arr[right] - target){
+                    resultArr[i] = arr[left];
+                    left --;
+                }else{
+                    resultArr[i] = arr[right];
+                    right++;
+                }
+            }
+            if(left < 0){
+                resultArr[i] = arr[right];
+                right++;
+            }
+            if(right >= arr.length){
+                resultArr[i] = arr[left];
+                left--;
+            }
+        }
+        return resultArr;
     }
 
     //---------------------------------------------二叉树遍历：BFS------------------------------------------------------
@@ -830,10 +891,13 @@ public class MiddleClassAlgorithm {
      * 拓扑BFS
      *      拓扑，也就是有向图的BFS，因为节点有向，所以需要单独记录节点有向数据，同时需要在for循环中修改入向数据。
      *      经典案例：选课（先修课->后修课），
-     *          使用使用List[] graph = new ArrayList[n]记录当前节点和指向的neighbors节点,使用int[] inDegree记录每个节点
-     *          的入向的数量。根据提供的参数，遍历获取无向节点添加到queue开始while(!queue.isEmpty())循环，再for-each()循
-     *          环每个neighbor，并修改遍历到的这个neighbor在数组inDegree中的记录的入向数量，对修改后入向数量为0的neighbor，
-     *          添加到queue。在while与for中间将节点添加到结果。验证结果数量与数组inDegree长度一致时可正常返回。
+     *          1、使用使用List[]或Map<Node,Set<Node>> graph记录当前节点和指向的neighbors节点,
+     *             使用int[]]或Map<Node,Integer> inDegree记录每个节点的入向的数量。
+     *          2、根据提供的参数，遍历获取无向节点添加到queue。
+     *          3、开始while(!queue.isEmpty())循环，再for-each()循环每个neighbor，修改遍历到的这个neighbor在inDegree
+     *             中的记录的“入向”数量，对修改后入向数量为0的neighbor，添加到queue。
+     *          4、添加结果的操作放在for循环内的话会忽略根节点，所以结果在while与for中间将节点添加到结果。最后返回结果。
+     *          待优化：创建节点Class对象，将入向数量作为数据添加到类中。省略了inDegree这个参数，简化代码(增加了空间复杂度)
      */
 
 
@@ -1003,6 +1067,495 @@ public class MiddleClassAlgorithm {
    }
 
 
+//--------------------------------------------------组合类 DFS-----------------------------------------------------------
+
+    /*
+     * 给定一个具有不数字的列表，返回其所有可能的不重复子集，要求任意子集从小到大排序输出。
+     * 思路：
+     *      要求“找到所有可能的xxx”，一般99%以上的可能采用DFS解决，考点在于写递归
+     */
+    @Test
+    public void test(){
+        int[] nums = {1,2};
+        System.out.println(subsets(nums));
+    }
+
+    /**
+     * 方法1：BFS；广度优先搜索，求所有子集
+     * 1、遍历结果集的各个集合并深度拷贝到新的集合中
+     * 2、依次添加下标index对应的整数到各个新的集合中，
+     * 3、最后再添加新的集合到结果集
+     */
+    public List<List<Integer>> subsetMy(int[] nums){
+        if(nums == null){
+            return null;
+        }
+        Arrays.sort(nums);
+        List<List<Integer>> resultSet = new LinkedList<>();
+        //只要nums非空，空集一定是子集之一
+        resultSet.add(new LinkedList<>());
+        getSubsets(nums, 0, resultSet);
+        return resultSet;
+    }
+
+    /*
+     * 递归的定义
+     * @param nums  数组
+     * @param currentIndex  遍历到的下标
+     * @param resultSet 结果集
+     */
+    public void getSubsets(int[] nums, int currentIndex, List<List<Integer>> resultSet){
+        if(currentIndex >= nums.length){
+            return;
+        }
+        int size = resultSet.size();
+        //遍历结果集所有的元素，依次添加index下标对应的数值。
+        for(int i = 0; i < size; i++){
+            LinkedList<Integer> miniList = (LinkedList<Integer>) resultSet.get(i);
+            //深拷贝
+            LinkedList<Integer> newMiniList = new LinkedList<>(miniList);
+            newMiniList.add(nums[currentIndex]);
+            resultSet.add(newMiniList);
+        }
+        getSubsets(nums, currentIndex + 1, resultSet);
+    }
+
+    /**
+     * 方法2：DFS:深度优先搜索算法，求所有子集
+     * @param nums
+     * @return
+     */
+    public List<List<Integer>> subsets(int[] nums){
+        List<List<Integer>> results = new ArrayList<>();
+        if(nums == null){
+            return results;
+        }
+        Arrays.sort(nums);
+        dfsOne(nums, 0, new ArrayList<Integer>(), results);
+        return results;
+    }
+
+    /*
+     * 递归定义：
+     *      nums数组的长度+1就是树的层数，每个节点的值都是一个集合，根据是否添加下标index对应整数到集合这种决策，分为左节点
+     * 和右节点，直到最底层所有节点对应集合合集就是不重复结果集，底层节点代表的集合就是当前节点到根节点的路径上所有决策添加的数值
+     * 的集合。
+     * @param nums  数组
+     * @param index  遍历到的数组下标
+     * @param subset 包含当前节点的路径种做出决策后得到的数值集合
+     * @param result  保存结果的结果集类型是集合的集合
+     */
+    private void dfsOne(int[] nums,
+                        int index,
+                        List<Integer> subset,
+                        List<List<Integer>> result){
+        if(index == nums.length){
+            result.add(new ArrayList<Integer>(subset));
+            return;
+        }
+        subset.add(nums[index]);
+        dfsOne(nums, index + 1, subset, result);
+        //注意一定要先“加上”，然后再去掉，这样才满足回溯算法回到初始状态的要求。
+        subset.remove(subset.size() - 1);
+        dfsOne(nums, index + 1, subset, result);
+    }
+
+    /**
+     * 方法3：DFS:深度优先搜索算法，求所有子集，这种方法更通用（默认数组中的整数不重复）
+     * 递归定义：
+     *      以当前集合为根节点，和数组下标index及以后的所有整数作为元素，查询能够组成的所有不重复子集，并添加到结果集result中。
+     * 例如以空集[]为根节点，[1,2,3]为数组，元素个数一个的子集：[1],[2],[3]; 以[1]为根节点，(2,3)为可选元素，可构成2个数的
+     * 不重复子集：[1,2], [1,3]; 以[2]为根节点，(3)为可选元素，可构成1个数的不重复子集：[2,3]; .....
+     * 注意：
+     *      为什么以[2]为根节点，可选元素只有(3)？ 因为除了2以外，只剩下1、3可选，但是选1的话会与以[1]为根节点的子集[1,2]重复，
+     * 由此可见以任意一个子集作为节点（[]空子集是根节点），以index + 1 到 nums.length-1对应的数组元素作为可选元素，依次添加到
+     * 原节点对应的子集中，由此产生新的节点，直到节点对应的子集中包含nums数组最后一位数为止，不再继续（递归）探索子节点。由以上
+     * 步骤产生的所有节点对应的子集，就是数组购成的所有不重复子集。
+     */
+
+    //递归定义：给定数组、下标、当前节点子集、结果集，获取以当前节点的子集为基点构成的所有不重复子集，并添加到结果集
+    //写递归的时候思维子需要停留在当前层，不要向下深入，默认递归拆解后的是已完成的！
+    private void dfsTwo(int[] nums,
+                        int index,
+                        List<Integer> subset,
+                        List<List<Integer>> results){
+        //深度拷贝
+        results.add(new ArrayList<Integer>(subset));
+        //递归出口(省略这一步也行，相等情况也会直接被for循环排除)
+        if(index == nums.length){
+            return;
+        }
+        //递归的拆解
+        for(int i = index; i < nums.length; i++){
+            subset.add(nums[i]);
+            dfsTwo(nums, i+1, subset, results);
+            //回溯backtracking
+            subset.remove(subset.size() - 1);
+        }
+    }
+
+    /**
+     * DFS:深度优先搜索算法，求所有子集，这种方法更通用（数组中存在重复整数的情况）
+     * 递归定义：
+     *      以当前集合为根节点，和数组下标index及以后的所有整数作为元素，查询能够组成的所有不重复子集，并添加到结果集result中。
+     * 原理：
+     *      以数组[1, 2', 2"]为例，按照方法三DFS方法在纸上推理遍历，可得到[1,2"]与[1,2']重复，[2"]与[2]重复，推理可知递归过程
+     * 中，遍历到index对应的数组整数nums[index]与数组前一个整数nums[index-1]相同，但整数nums[index-1]不在当前子集subset中，如：
+     * [1,2"]中的2"与2'相同，但2'不在[1,2"]，此时可判定当前subest : [1,2"]为重复子集，可以舍弃。
+     * 注意：
+     *      传入参数nums数组一定是经过排序的，Arrays.sort(nums); 否则就会出现[1,2,3,2',0,2"]的情况不满足上述去重原理。只有
+     *      排序后，相同的整数才会放在一起。
+     */
+    public void dfsWithRepeat(int[] nums, int index, List<List> result, List<Integer> subset){
+        result.add(new ArrayList(subset));
+        for(int i = index; i < nums.length; i++){
+            //结论：相邻且相同且不在子集中的整数，都是重复；
+            //做法：遍历到相邻且相同的整数，前一个数在子集时保留，前一个数不在子集就舍弃；
+            //     因此关键就在于遍历到一个数与前一个数相等时，判断前一个数在不在subset中！
+            //     如果一个数已经在subset中，那么这个数的下一个数一定是下一轮递归的第一个数，即i== index，
+            //     逆反：i != index时这个数前一个数一定不在子集subset中。
+            if(i != 0 && nums[i] == nums[i - 1] && i > index){
+                continue;
+            }
+            subset.add(nums[i]);
+            dfsWithRepeat(nums, index+1, result, subset);
+            subset.remove(subset.size() -1);
+        }
+
+    }
+//---------------------------------------------------排列的搜索树--------------------------------------------------------
+
+
+//-----------------------------------------分治法解决99%二叉树问题的算法--------------------------------------------------
+
+    /*
+     * 分治法 Divide & Conquer
+     *     将大规模问题拆分为若干个小规模的同类型问题去处理的算法思想。把一个复杂的问题分成两个
+     * 或更多的相同或相似的子问题，再把子问题分成更小的子问题……直到最后子问题可以简单的直接求解，
+     * 原问题的解即子问题的解的合并。
+     *
+     * 什么样的数据结构适合分治法？
+     *      1、二叉树：整棵树的左子树和右子树都是二叉树。二叉树的大部分题都可以使用分治法解决
+     *         遇到二叉树的问题，就想想整棵树在该问题上的结果和左右孩子在该问题上的结果之间有
+     *         什么联系，一开始不要关注小树的问题，只需要关注大树的问题解决了。这棵大树问题
+     *         解决了，小树的问题就迎刃而解了。
+     *      2、数组：一个大数组可以拆分为若干个不相交的子数组归并排序，快速排序，都是基于数组的分治法。
+     *
+     * 二叉树考点：
+     *      1、考察形态：二叉树上求值，求路径（考点本质：深度优先搜索）
+     *      2、考察形态：二叉树结构变化（考点本质：深度优先搜索）
+     *      3、考察形态：二叉查找树（Binary Search Tree）（考点本质：深度优先搜索）
+     */
+
+
+
+    /*
+     * 考察形态一：二叉树上求值(Maximum / Minimum / Average / Sum)，求路径(Paths)
+     *
+     * 求最小子树  Minimum Subtree
+     *     给一棵二叉树, 找到和为最小的子树, 返回其根节点（不是根节点的和）。输入输出数据范围都在int内。
+     * 注意节点值可以为负数，保证只有一棵和最小的子树，并且给出的二叉树不是一棵空树。
+     * 思路：
+     *      遇到二叉树的问题，就想想整棵树在该问题上的结果和左右孩子在该问题上的结果之间有什么联系，
+     * 树的和 = 根节点值 + 左子树和 + 右子树和。
+     */
+
+    class Solution{
+        //最小值初始为负无穷
+        private int minSum;
+        //最小和子树节点
+        private TreeNode minRoot;
+
+        public TreeNode findMiniSumSubTree(TreeNode root){
+            minSum = Integer.MAX_VALUE;
+            minRoot = null;
+            //递归三要素1：递归定义：确定递归函数的作用，以及输入输出参数。
+            getTreeSum(root);
+            return minRoot;
+        }
+
+        public int getTreeSum(TreeNode root){
+            //递归三要素3：递归出口
+            if(root == null){
+                return 0;
+            }
+            //递归三要素2：递归拆解
+            //左子树和
+            int leftSum = getTreeSum(root.left);
+            //右子树和
+            int rightSum = getTreeSum(root.right);
+            //得到root为根的二叉树所有节点之和
+            int rootSum = leftSum + rightSum + root.val;
+            //打擂台确定最新的minSum
+            if(rootSum < minSum){
+                minSum = rootSum;
+                minRoot = root;
+            }
+            //返回当前和
+            return rootSum;
+        }
+    }
+
+    /*
+     * 考察形态一：查最近公共祖先 II (Lowest Common Ancestor II)
+     *     给一棵二叉树和二叉树中的两个节点，找到这两个节点的最近公共祖先LCA。两个节点的最近公共祖先，
+     * 是指两个节点的所有父亲节点中（包括这两个节点），离这两个节点最近的公共的节点。每个节点除了左右
+     * 儿子指针以外，还包含一个父亲指针parent，指向自己的父亲。
+     * 注意：
+     *      这里输入的两个点是node objects，不是数字；自己可以是自己的祖先；
+     * 思路：
+     *      1、顺藤摸瓜遍历获取节点A的所有父节点，放入HashSet；然后依次顺藤摸瓜
+     *         遍历B节点的所有父类，第一个出现在HashSet中的父类节点就是最近公共节点。
+     *      2、分别依次获取A节点和B节点的所有父节点，存入List，然后从root节点开始
+     *         单指针遍历，aParentList和bParentList中最后一个相同的节点就是最近公共节点。
+     */
+    public ParentTreeNode lowestCommonAncestorII(ParentTreeNode root,
+                                                 ParentTreeNode A, ParentTreeNode B){
+        HashSet<ParentTreeNode> parentSet = new HashSet<>();
+        //顺藤摸瓜把A的所有父节点放入哈希表中
+        ParentTreeNode curr = A;
+        while(curr != null){
+            parentSet.add(curr);
+            curr = curr.parent;
+        }
+        //顺藤摸瓜遍历B的父节点，第一个出现在哈希表中的就是答案
+        curr = B;
+        while(curr != null){
+            if(parentSet.contains(curr)){
+                return curr;
+            }
+            curr = curr.parent;
+        }
+        return null;
+    }
+
+    /*
+     * 考察形态一：查最近公共祖先 (Lowest Common Ancestor of a Binary Tree )
+     *      给定二叉树的根节点和两个子节点，找到两个节点的最近公共父节点(LCA)。最近公共祖先是
+     * 两个节点的公共的祖先节点且具有最大深度。“假设给出的两个节点一定都在树中存在”。
+     * 注意：
+     *      这里输入的两个点是node objects，不是数字；自己可以是自己的祖先；
+     * 思路：
+     *      遇到二叉树的问题，就想想整棵树在该问题上的结果和左右孩子在该问题上的结果之间有什么联系
+     * 树存在LCA与左右子树存在LCA的关系。依次判断：1、（root节点 == A节点 || root节点 == B节点）
+     * 那么这时候root节点一定是LCA；2、root左子树存在A/B节点 && root右子树存在A/B节点，此时root
+     * 节点一定是LCA；3、如果root节点不是A/B节点，同时AB节点不分布在左右子树两侧，那么只可能AB节点
+     * 都在root左子树或者root右子树，则LCA == root左子树LCA || 右子树LCA。
+     * 由此完成递归三要素：
+     * 递归定义：
+     *      给定root节点、A节点、B节点作为入参，返回root节点下的LCA节点，或者找到的A/B节点本身；
+     *      当root为根节点的树下存在A、B 2个点时，返回的是最近公共父节点，子树下只有A/B节点时返回的是节点本身
+     * 递归的出口：
+     *      root == null时返回null、其次见思路1、思路2、思路3。
+     * 递归的拆分：
+     *      以左右子树作为root节点进一步递归。
+     */
+
+    public TreeNode lowestCommonAncestor(TreeNode root,TreeNode nodeA,TreeNode nodeB){
+        if(root == null){
+            return null;
+        }
+        //1、采用DFS的前序遍历的方式查找A/B节点，默认找到了就直接返回作为当前子树的LCA，返回到上一层，无需继续向下查找
+        if(root == nodeA || root == nodeB){
+            return root;
+        }
+        //分别获取默认的左右子树的LCA（即找到A/B节点就作为LCA返回）
+        TreeNode leftResult = lowestCommonAncestor(root.left, nodeA, nodeB);
+        TreeNode rightResult = lowestCommonAncestor(root.right, nodeA, nodeB);
+        //2、存在特殊情况如果左右子树分别找到了自己默认的LCA，此时各自的LCA失效，将root作为当前子树的LCA返回上一层继续比较
+        if(leftResult != null && rightResult != null){
+            return root;
+        }
+        //3、走到这一个判断，表明左右子树仅有一个子树找到了默认的LCA，此时LCA继续生效，返回到上一层继续参与比较
+        if(leftResult != null){
+            return leftResult;
+        }
+        if(rightResult != null){
+            return rightResult;
+        }
+        //4、左右子树都没找到的情况下直接返回空。
+        return null;
+    }
+
+    /*
+     * 考察形态二：Flatten Binary Tree to Linked List 将二叉树拆成链表(二叉树结构变化)
+     *      将一棵二叉树按照前序遍历拆解成为一个假链表。所谓的假链表是说，用二叉树的 right 指针，
+     * 来表示链表中的 next 指针。把这道题目翻译成人话：DFS前序遍历这棵树，然后把结果一路向右串联起来。
+     * 思路：
+     *      遇到二叉树的问题，就想想整棵树在该问题上的结果和左右孩子在该问题上的结果之间有什么联系树的
+     * 链表 = 树的根节点 + 左子树链表 + 右子树链表
+     */
+    public void flatten(TreeNode root){
+        flattenAndReturnLastNode(root);
+    }
+
+    //1、递归定义：将root这棵树摊平（形成一路向右的假列表）并返回摊平的树的尾部节点
+    public TreeNode flattenAndReturnLastNode(TreeNode root){
+        //2、递归结束：root为空时直接返回；
+        if(root == null){
+            return null;
+        }
+        //3、递归拆解：分别获取左右子树转换成“链表”后的末尾节点
+        TreeNode leftLastNode = flattenAndReturnLastNode(root.left);
+        TreeNode rightLastNode = flattenAndReturnLastNode(root.right);
+        //左右子树链表都不为空
+        if(leftLastNode != null && rightLastNode != null){
+            leftLastNode.right = root.right;
+            root.right = root.left;
+            root.left = null;
+            return rightLastNode;
+        }
+        //左子树链表不为空
+        if(leftLastNode != null){
+            root.right = root.left;
+            root.left = null;
+            return leftLastNode;
+        }
+        //右子树链表不为空
+        if(rightLastNode != null){
+            return rightLastNode;
+        }
+        //左右子树链表都为空
+        return root;
+    }
+
+
+    /*
+     * 考察形态三：二叉查找树 Binary Search Tree
+     * 二叉查找树定义：
+     *      左子树节点的值 < 根节点的值，右子树节点的值 >= 根节点的值
+     * 相等的情况
+     *      值相等的点可能在右子树，或者可能在左子树，需要跟面试官确认。
+     * BST特点：
+     *      中序遍历结果有序（不下降的顺序，有些相邻点可能相等）
+     *      ● 如果二叉树的中序遍历不是“不下降”序列，则一定不是BST
+     *      ● 如果二叉树的中序遍历是不下降，也不一定是BST（如：所有节点值相同）
+     * BST基本操作：
+     *      1、有序数列转为二叉查找树
+     *      2、在二叉查找树中插入节点
+     *      3、二叉查找树中搜索相关节点
+     *      4、二叉查找树中删除节点后拼接成新的二叉查找树
+     *      5、二叉查找树的中序遍历（在一个有序数列上找一个target一定要想到二叉查找树和二分查找）
+     */
+
+    /*
+     * Kth Smallest Element in a BST, BST中第K小的元素
+     * 给一棵二叉查找树，写一个 KthSmallest 函数来找到其中第 K 小的元素
+     * 思路：
+     *      1、中序遍历（遍历到第K个就行）；
+     *      2、中序遍历（非递归实现），DFS的递归方式实现太简单了都是三行代码，于是实际
+     *         interview时可能会要求用非递归方式实现；（用到栈stack）
+     */
+    public int kthSmallest(TreeNode root, int k){
+        //使用stack进行非递归算法的数据存取
+        Stack<TreeNode> stack = new Stack<>();
+        //一路向左，把左边缘的点全部入栈
+        while(root != null){
+            stack.push(root);
+            root = root.left;
+        }
+        //每次从栈顶弹出一个节点，需要k-1次弹出，才能让第k小的元素出现在栈顶
+        for(int i = 0; i <k-1; i++){
+            //栈顶节点出栈
+            TreeNode node = stack.pop();
+            //如果栈顶节点的右节点存在，以栈顶节点的右节点为起始节点一路向左，依次添加到栈内
+            //原因是以右节点一路向左找到的节点一定是整个右子树中的最小值节点，由此保证对二叉
+            //查找树从小到大的依次遍历。
+            if(node.right != null){
+                TreeNode pushNode = node.right;
+                while(pushNode != null){
+                    stack.push(pushNode);
+                    pushNode = pushNode.left;
+                }
+            }
+        }
+        return stack.peek().val;
+    }
+
+    /*
+     * 考察形态三：二叉查找树 Binary Search Tree
+     * Closest Binary Search Tree Value 二叉搜索树中最接近的值
+     * 思路：
+     *      分别找到 >= target的minNum和 <= target的maxNum，然后比较minNum和maxNum获取最接近的值。
+     */
+    public int closestValue(TreeNode root,double target){
+        if(root == null){
+            return 0;
+        }
+        TreeNode lowerBound = lowerBound(root, target);
+        TreeNode upperBound = upperBound(root, target);
+        int upVal = upperBound.val;
+        int lowVal = lowerBound.val;
+        if(lowerBound == null){
+            return upVal;
+        }
+        if (upperBound == null){
+            return lowVal;
+        }
+        return (upVal - target > target -lowVal)? lowVal : upVal;
+
+    }
+    //查找目标值下限
+    private TreeNode lowerBound(TreeNode root, double target){
+        if(root == null){
+            return null;
+        }
+        if(target < root.val){
+            //此时下限一定在root的左子树中
+            return lowerBound(root.left, target);
+        }
+        //如果root.vakl <= target,那么此时root就是一个下限，继续在右子树查找更接近的下限
+        TreeNode lowerBoundNode = lowerBound(root.right, target);
+        return (lowerBoundNode == null)? root : lowerBoundNode;
+    }
+    //查找目标值上限
+    private TreeNode upperBound(TreeNode root, double target){
+        if(root == null){
+            return null;
+        }
+
+        if(target > root.val){
+            //此时上限一定在root的右子树中
+            return upperBound(root.right, target);
+        }
+        //如果target <= root.val, 那么此时root就是一个上限继续在左子树查找更接近的上限
+        TreeNode upperBoundNode = upperBound(root.left, target);
+        //如果存在值更小的上限则直接返回，否则返回root；
+        return (upperBoundNode == null) ? root : upperBoundNode;
+    }
+
+
+
+    /*
+     * 红黑树：是一种平衡的二叉查找树 Balanced BST
+     * 应用：
+     *      O(logN) 的时间内实现增删查改
+     *      O(logN) 的时间内实现找最大找最小
+     *      O(logN) 的时间内实现找比某个数小的最大值(upperBound)和比某个数大的最小值(lowerBound)
+     * 拓展：
+     *      Java 1.8 中的 HashMap 的实现里同时用到了 TreeMap 和 LinkedList
+     *      只可能考红黑树的应用，不会考红黑树的实现！
+     */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//----------------------------------------------------------------------------------------------------------------------
 
     public static void main(String[] args) {
         int[] nums = {5,2,3,1};
@@ -1027,6 +1580,11 @@ class TreeNode {
         this.left = left;
         this.right = right;
     }
+}
+
+//包含指向父节点的指针的二叉树节点。
+class ParentTreeNode{
+    public ParentTreeNode parent, left, right;
 }
 
 //二叉树非递归中序遍历迭代器

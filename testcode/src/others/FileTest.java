@@ -49,6 +49,18 @@ public class FileTest {
         System.out.println(fils1.listFiles().length);
     }
 
+    //测试绝对路径和相对路劲
+    @Test
+    public void testPath(){
+        File fils = new File("F:/Java/IdeaProjects/tmp/mesh");
+        for(File f : fils.listFiles()){
+            String name = f.getName();
+            String path = f.getPath();
+            String absolutePath = f.getAbsolutePath();
+            System.out.println(name +"___"+path+"___"+absolutePath);
+        }
+    }
+
     /**测试写入文件前如果文件不存在需要创建吗？
      * 结论：
      *      1、当文件名之前的所有文件夹路径都存在但是文件不存在时，写入时会自动创建txt文件

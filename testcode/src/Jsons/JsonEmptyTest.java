@@ -40,5 +40,9 @@ public class JsonEmptyTest {
         System.out.println("d==null:"+(d == null)); /*true*/
         System.out.println("e==null:"+(e == null)); /*false*/
         System.out.println("g==null:"+(g == null)); /*false*/
+
+        resultJson2.put("open" , 1);
+        System.out.println("open : " + resultJson2.getString("open"));
+        System.out.println("oooooooooo" + "" + b + "xxxxxx");
     }
 }

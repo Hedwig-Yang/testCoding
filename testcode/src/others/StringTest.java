@@ -15,4 +15,19 @@ public class StringTest {
         String s = null;
         System.out.println(s.contains("abc"));  //java.lang.NullPointerException
     }
+
+    /**
+     * 测试StringBuffer & StringBuilder
+     */
+    @Test
+    public void testStringBuffer(){
+        StringBuffer  sf = new StringBuffer();
+        System.out.println(sf == null);
+        System.out.println(sf.append("xxx"));
+
+        StringBuilder sb = new StringBuilder();
+        System.out.println(sb == null);
+        System.out.println(sb.append("yyy"));
+
+    }
 }
