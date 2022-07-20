@@ -1224,6 +1224,43 @@ public class MiddleClassAlgorithm {
 
     }
 //---------------------------------------------------排列的搜索树--------------------------------------------------------
+    /*
+     * 给定一个数字列表，返回其所有可能的排列。
+     * permutation : [ˌpɜːmjuˈteɪʃn] n. 排列(方式); 组合(方式);
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> permutations = new ArrayList<>();
+        if(nums == null || nums.length == 0){
+            return permutations;
+        }
+        boolean[] visited = new boolean[nums.length];
+        ArrayList<Integer> permutation = new ArrayList<>();
+        dfsWithPermutation(nums, visited, permutation, permutations);
+        return permutations;
+    }
+
+    //递归的定义：找到以子集permutation开头的所有排列
+    private void dfsWithPermutation(int[] nums,
+                     boolean[] visited,
+                     ArrayList<Integer> permutation,
+                     List<List<Integer>> permutations){
+        //递归的出口
+        if(permutation.size() == nums.length){
+            permutations.add(new ArrayList<>(permutation));
+            return;
+        }
+        //递归的拆解
+        for(int i = 0; i < nums.length; i++){
+            if(visited[i]){
+                continue;
+            }
+            visited[i] = true;
+            permutation.add(nums[i]);
+            dfsWithPermutation(nums, visited, permutation, permutations);
+            permutation.remove(permutation.size() - 1);   //backtracking
+            visited[i] = false;   //backtracking
+        }
+    }
 
 
 //-----------------------------------------分治法解决99%二叉树问题的算法--------------------------------------------------
