@@ -25,7 +25,8 @@ public class JsonTest {
         JSONObject es = new JSONObject();
         es.put("num", 123);
         String num1 = es.getString("num1");
-        System.out.println(num1 == null);
+        boolean starts = num1.startsWith("num");
+        System.out.println(num1 == null + "---------"+starts);
     }
 
     @Test
@@ -54,6 +55,14 @@ public class JsonTest {
         JSONObject jo2 = ja.getJSONObject(0);
         jo2.put("a",3);
         System.out.println(ja.toJSONString());
+    }
+
+    @Test
+    public void testJsonAddNull(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("abc", 1);
+        jsonObject.put("efg", null);
+        System.out.println(jsonObject.toJSONString());
     }
 
 }
