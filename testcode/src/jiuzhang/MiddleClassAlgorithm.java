@@ -1225,7 +1225,7 @@ public class MiddleClassAlgorithm {
     }
 //---------------------------------------------------排列的搜索树--------------------------------------------------------
     /*
-     * 给定一个数字列表，返回其所有可能的排列。
+     * 给定一个数字列表，返回其所有可能的全排列。
      * permutation : [ˌpɜːmjuˈteɪʃn] n. 排列(方式); 组合(方式);
      */
     public List<List<Integer>> permute(int[] nums) {
@@ -1239,7 +1239,21 @@ public class MiddleClassAlgorithm {
         return permutations;
     }
 
-    //递归的定义：找到以子集permutation开头的所有排列
+    /**
+     * 递归的定义：找到以子集permutation开头的所有排列
+     * @param nums 原数组
+     * @param visited boolean数组用于记录下标对应的原数组是否被访问过
+     * @param permutation 当前遍历到的集合
+     * @param permutations 全排列结果集
+     * 特殊情况：存在重复整数的数组求全排列（以[1、2'、2"]为例，
+     *    存在重复：{{1,2',2"}、{1,2",2'}、{2',1,2"}、{2",1,2'}}）
+     *    1、对重复情况进行量化：两个相邻的重复的数未按顺序填写到当前集合，或者说前一个数与当前数相同，但前一个数不在集合内
+     *    2、在permute()方法内添加集合排序：Arrays.sort(nums);
+     *    3、在递归拆解for循环中中添加重复校验：
+     *       if(i > 0 && nums[i] == nums[i -1] && !visited[i - 1]){
+     *                     continue;
+     *       }
+     */
     private void dfsWithPermutation(int[] nums,
                      boolean[] visited,
                      ArrayList<Integer> permutation,
@@ -1388,7 +1402,7 @@ public class MiddleClassAlgorithm {
      *      以左右子树作为root节点进一步递归。
      */
 
-    public TreeNode lowestCommonAncestor(TreeNode root,TreeNode nodeA,TreeNode nodeB){
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode nodeA, TreeNode nodeB){
         if(root == null){
             return null;
         }

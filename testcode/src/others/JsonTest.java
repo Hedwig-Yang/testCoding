@@ -65,4 +65,29 @@ public class JsonTest {
         System.out.println(jsonObject.toJSONString());
     }
 
+    /**
+     * 测试getInteger
+     */
+    @Test
+    public void testIntege(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("a","1");
+        Integer a = jsonObject.getInteger("a");
+        if(a == 1){
+            System.out.println("success");
+        }else{
+            System.out.println("fail");
+        }
+    }
+
+    /**
+     * Json存储value = null时直接不存储
+     */
+    @Test
+    public void testNullPut(){
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("a", null);
+        System.out.println(jsonObject.toJSONString());
+    }
+
 }
